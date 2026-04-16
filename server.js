@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
 const { DatabaseSync } = require('node:sqlite');
+const chatRoutes = require('./routes/chatRoutes');
 require('dotenv').config();
 
 const app = express();
@@ -46,6 +47,7 @@ db.exec(`
   );
 `);
 
+app.use('/api', chatRoutes);
 function normalizeEmail(email) {
   return String(email || '').trim().toLowerCase();
 }
