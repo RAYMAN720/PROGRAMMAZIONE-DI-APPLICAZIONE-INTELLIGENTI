@@ -3,77 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Juray IA - Chat</title>
+  <title>Juray IA | Chat</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <main class="chat-page">
-    <section class="chat-shell">
-      <header class="chat-header">
-        <div>
-          <h1>AI Chat</h1>
-          <div class="chat-user" id="chatUser"></div>
-        </div>
-        <div class="row-gap" style="width: 140px;">
-          <a href="welcome.html" class="small-link">← Welcome</a>
-          <a href="#" id="logoutLink" class="small-link">Logout</a>
-        </div>
+  <div class="page-shell">
+    <div class="container">
+      <header class="site-header">
+        <a href="index.html" class="brand">
+          <span class="brand-badge">J</span>
+          <span class="brand-copy">
+            <strong>Juray IA</strong>
+            <span>Assistente conversazionale</span>
+          </span>
+        </a>
+        <nav class="nav-links">
+          <a href="welcome.html">Welcome</a>
+          <button id="logoutBtn" class="nav-primary" type="button">Logout</button>
+        </nav>
       </header>
 
-      <div class="chat-body" id="messages"></div>
+      <main class="chat-page">
+        <section class="chat-shell">
+          <header class="chat-header">
+            <div>
+              <span class="eyebrow">Chat demo</span>
+              <h1>Parla con Juray IA</h1>
+              <div class="chat-user" id="chatUser"></div>
+            </div>
+            <div class="row-gap">
+              <a href="welcome.html" class="small-link">← Torna alla welcome</a>
+            </div>
+          </header>
 
-      <form class="chat-input-area" id="chatForm">
-        <input class="input" type="text" id="userInput" placeholder="Scrivi un messaggio..." autocomplete="off">
-        <button type="submit" class="btn">Invia</button>
-      </form>
-    </section>
-  </main>
+          <div class="chat-body" id="messages"></div>
+
+          <form class="chat-input-area" id="chatForm">
+            <input class="input" type="text" id="userInput" placeholder="Scrivi un messaggio..." autocomplete="off" required>
+            <button type="submit" class="btn-primary">Invia</button>
+          </form>
+
+          <p class="chat-tip">Suggerimento: prova a scrivere “ciao”, “login”, “registrazione” oppure “aiuto”.</p>
+        </section>
+      </main>
+    </div>
+  </div>
 
   <script src="auth.js"></script>
-  <script>
-    const user = requireAuth();
-    document.getElementById('chatUser').textContent = `Connesso come ${user.name} (${user.email})`;
-
-    const messages = document.getElementById('messages');
-    const chatForm = document.getElementById('chatForm');
-    const userInput = document.getElementById('userInput');
-
-    function addMessage(text, sender) {
-      const div = document.createElement('div');
-      div.className = `msg ${sender}`;
-      div.textContent = text;
-      messages.appendChild(div);
-      messages.scrollTop = messages.scrollHeight;
-    }
-
-    function botReply(userText) {
-      const lower = userText.toLowerCase();
-      if (lower.includes('ciao')) return 'Ciao! Sono Juray IA, come posso aiutarti oggi?';
-      if (lower.includes('login')) return 'Per fare login usa la pagina login.html con un account registrato.';
-      if (lower.includes('registr')) return 'Se non sei registrato, vai su signup.html e crea il tuo account.';
-      return 'Messaggio ricevuto. Questa è una demo front-end della chat.';
-    }
-
-    addMessage(`Benvenuto ${user.name}! Scrivimi pure un messaggio.`, 'bot');
-
-    chatForm.addEventListener('submit', function (event) {
-      event.preventDefault();
-      const text = userInput.value.trim();
-      if (!text) return;
-
-      addMessage(text, 'user');
-      userInput.value = '';
-
-      setTimeout(() => {
-        addMessage(botReply(text), 'bot');
-      }, 400);
-    });
-
-    document.getElementById('logoutLink').addEventListener('click', function (event) {
-      event.preventDefault();
-      logoutUser();
-      window.location.href = 'login.html';
-    });
-  </script>
 </body>
 </html>

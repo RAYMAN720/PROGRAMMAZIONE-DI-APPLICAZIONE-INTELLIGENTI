@@ -1,0 +1,30 @@
+{
+  "name": "programmazione-di-applicazione-intelligenti",
+  "version": "1.0.0",
+  "description": "Multi-page student project with signup, login, welcome page, chatbot interface and SQLite-backed auth.",
+  "main": "root/server.js",
+  "scripts": {
+    "start": "node root/server.js",
+    "dev": "node root/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RAYMAN720/PROGRAMMAZIONE-DI-APPLICAZIONE-INTELLIGENTI.git"
+  },
+  "keywords": [
+    "student-project",
+    "express",
+    "sqlite",
+    "frontend"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/RAYMAN720/PROGRAMMAZIONE-DI-APPLICAZIONE-INTELLIGENTI/issues"
+  },
+  "homepage": "https://github.com/RAYMAN720/PROGRAMMAZIONE-DI-APPLICAZIONE-INTELLIGENTI#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}

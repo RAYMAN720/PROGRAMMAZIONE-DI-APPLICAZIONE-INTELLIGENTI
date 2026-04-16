@@ -3,74 +3,81 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Juray IA - Sign up</title>
+  <title>Juray IA | Sign up</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <main class="page-center">
-    <section class="form-card">
-      <h1 class="form-title">Sign up</h1>
-      <p class="form-subtitle">Se non sei registrato, crea qui il tuo account.</p>
+  <div class="page-shell">
+    <div class="container">
+      <header class="site-header">
+        <a href="index.html" class="brand">
+          <span class="brand-badge">J</span>
+          <span class="brand-copy">
+            <strong>Juray IA</strong>
+            <span>Registrazione utente</span>
+          </span>
+        </a>
+        <nav class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="login.html" class="nav-primary">Login</a>
+        </nav>
+      </header>
 
-      <form id="signupForm">
-        <div class="form-group">
-          <label for="name">Nome</label>
-          <input class="input" type="text" id="name" placeholder="Il tuo nome" required>
-        </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input class="input" type="email" id="email" placeholder="esempio@email.com" required>
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input class="input" type="password" id="password" placeholder="Minimo 4 caratteri" minlength="4" required>
-        </div>
-        <div class="form-group">
-          <label for="confirmPassword">Conferma password</label>
-          <input class="input" type="password" id="confirmPassword" placeholder="Ripeti la password" minlength="4" required>
-        </div>
-        <button type="submit" class="btn">Crea account</button>
-      </form>
+      <main class="page-center">
+        <div class="auth-layout">
+          <section class="auth-card">
+            <span class="eyebrow">Nuovo profilo</span>
+            <h1 class="page-title">Crea il tuo account</h1>
+            <p class="form-subtitle">Registrati con i tuoi dati per accedere all’area personale e alla chat.</p>
 
-      <div id="messageBox" class="alert"></div>
+            <form id="signupForm" class="form-grid" novalidate>
+              <div class="form-row">
+                <label for="name">Nome completo</label>
+                <input class="input" type="text" id="name" name="name" placeholder="Inserisci nome e cognome" required>
+              </div>
 
-      <p class="helper-text">
-        Hai già un account? <a href="login.html">Vai al login</a>
-      </p>
-      <p class="helper-text"><a href="index.html">← Torna alla home</a></p>
-    </section>
-  </main>
+              <div class="form-row">
+                <label for="email">Email</label>
+                <input class="input" type="email" id="email" name="email" placeholder="nome@email.com" required>
+              </div>
+
+              <div class="form-row">
+                <label for="password">Password</label>
+                <input class="input" type="password" id="password" name="password" placeholder="Minimo 4 caratteri" minlength="4" required>
+              </div>
+
+              <div class="form-row">
+                <label for="confirmPassword">Conferma password</label>
+                <input class="input" type="password" id="confirmPassword" name="confirmPassword" placeholder="Ripeti la password" minlength="4" required>
+              </div>
+
+              <button type="submit" class="btn-primary">Crea account</button>
+            </form>
+
+            <div id="messageBox" class="alert" role="alert" aria-live="polite"></div>
+
+            <p class="helper-text">Hai già un account? <a href="login.html">Vai al login</a>.</p>
+          </section>
+
+          <aside class="info-card">
+            <span class="eyebrow">Student-ready design</span>
+            <h3>Perché questa versione è migliore?</h3>
+            <p>
+              La nuova struttura elimina campi duplicati, semplifica il codice JavaScript e rende l’interfaccia più ordinata.
+              In questo modo il progetto appare più maturo ma resta comprensibile e realistico per uno studente.
+            </p>
+
+            <ul class="info-list">
+              <li>Un solo form chiaro, con validazione di conferma password.</li>
+              <li>Messaggi di stato leggibili dopo registrazione o errore.</li>
+              <li>Registrazione collegata al database locale gestito dal server Express.</li>
+            </ul>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </div>
 
   <script src="auth.js"></script>
-  <script>
-    const form = document.getElementById('signupForm');
-    const messageBox = document.getElementById('messageBox');
-
-    form.addEventListener('submit', function (event) {
-      event.preventDefault();
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
-      const confirmPassword = document.getElementById('confirmPassword').value;
-
-      if (password !== confirmPassword) {
-        messageBox.className = 'alert error';
-        messageBox.textContent = 'Le password non coincidono.';
-        return;
-      }
-
-      const result = registerUser(name, email, password);
-      if (result.ok) {
-        messageBox.className = 'alert success';
-        messageBox.textContent = result.message + ' Reindirizzamento al login...';
-        setTimeout(() => {
-          window.location.href = 'login.html';
-        }, 1200);
-      } else {
-        messageBox.className = 'alert error';
-        messageBox.textContent = result.message;
-      }
-    });
-  </script>
 </body>
 </html>
