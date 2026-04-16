@@ -4,77 +4,50 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Juray IA | Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="page-shell">
-    <div class="container">
-      <header class="site-header">
-        <a href="index.html" class="brand">
+  <div class="page-shell auth-shell">
+    <div class="container auth-layout">
+      <section class="auth-aside glass-card">
+        <a href="index.html" class="brand compact-brand">
           <span class="brand-badge">J</span>
-          <span class="brand-copy">
-            <strong>Juray IA</strong>
-            <span>Area di accesso</span>
-          </span>
+          <span class="brand-copy"><strong>Juray IA</strong><span>Sign in</span></span>
         </a>
-        <nav class="nav-links">
-          <a href="index.html">Home</a>
-          <a href="signup.html" class="nav-primary">Sign up</a>
-        </nav>
-      </header>
-
-      <main class="page-center">
-        <div class="auth-layout">
-          <section class="auth-card">
-            <span class="eyebrow">Bentornato</span>
-            <h1 class="page-title">Accedi al tuo account</h1>
-            <p class="form-subtitle">Inserisci email e password per entrare nell’area riservata e aprire la chat.</p>
-
-            <form id="loginForm" class="form-grid" novalidate>
-              <div class="form-row">
-                <label for="email">Email</label>
-                <input class="input" type="email" id="email" name="email" placeholder="nome@email.com" required>
-              </div>
-
-              <div class="form-row">
-                <label for="password">Password</label>
-                <input class="input" type="password" id="password" name="password" placeholder="Inserisci la password" required>
-              </div>
-
-              <button type="submit" class="btn-primary">Login</button>
-            </form>
-
-            <div id="messageBox" class="alert" role="alert" aria-live="polite"></div>
-
-            <p class="helper-text">Non hai ancora un account? <a href="signup.html">Registrati qui</a>.</p>
-            <p class="helper-text">Utente demo: <strong>juray@gmail.com</strong> / <strong>1234</strong></p>
-          </section>
-
-          <aside class="info-card">
-            <span class="eyebrow">Access flow</span>
-            <h3>Che cosa succede dopo il login?</h3>
-            <p>
-              Se le credenziali sono corrette, il server restituisce i dati dell’utente e il browser salva una piccola sessione locale.
-              Da lì puoi entrare nella pagina di benvenuto e usare la chat demo.
-            </p>
-
-            <div class="meta-row">
-              <span class="meta-chip">Database locale</span>
-              <span class="meta-chip">Controllo campi</span>
-              <span class="meta-chip">Reindirizzamento protetto</span>
-            </div>
-
-            <ul class="info-list">
-              <li>Il form mostra messaggi di errore se i campi non sono validi.</li>
-              <li>L’utente demo resta utile per provare l’app senza creare subito un account.</li>
-              <li>La pagina è pensata per essere semplice da spiegare in sede di presentazione.</li>
-            </ul>
-          </aside>
+        <span class="eyebrow">Access</span>
+        <h1>Welcome back</h1>
+        <div class="demo-box">
+          <span>Demo</span>
+          <strong>juray@gmail.com</strong>
+          <span>1234</span>
         </div>
+      </section>
+
+      <main class="form-card glass-card">
+        <span class="eyebrow">Login</span>
+        <h2 class="form-title">Access your account</h2>
+        <form id="loginForm" class="form-grid">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input class="input" type="email" id="email" placeholder="name@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="password-field">
+              <input class="input" type="password" id="password" placeholder="Enter password" required>
+              <button type="button" class="ghost-btn" id="togglePassword">Show</button>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary">Login</button>
+        </form>
+        <div id="loginStatus" class="status"></div>
+        <p class="helper-text"><a href="signup.html">Create account</a></p>
       </main>
     </div>
   </div>
-
   <script src="auth.js"></script>
 </body>
 </html>

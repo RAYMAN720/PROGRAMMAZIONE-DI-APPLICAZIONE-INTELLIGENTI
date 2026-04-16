@@ -4,51 +4,44 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Juray IA | Chat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="page-shell">
-    <div class="container">
+  <div class="page-shell" data-page="chat">
+    <div class="container wide">
       <header class="site-header">
         <a href="index.html" class="brand">
           <span class="brand-badge">J</span>
-          <span class="brand-copy">
-            <strong>Juray IA</strong>
-            <span>Assistente conversazionale</span>
-          </span>
+          <span class="brand-copy"><strong>Juray IA</strong><span>Assistant</span></span>
         </a>
         <nav class="nav-links">
-          <a href="welcome.html">Welcome</a>
+          <a href="welcome.html">Workspace</a>
           <button id="logoutBtn" class="nav-primary" type="button">Logout</button>
         </nav>
       </header>
 
       <main class="chat-page">
-        <section class="chat-shell">
+        <section class="chat-shell glass-card">
           <header class="chat-header">
             <div>
-              <span class="eyebrow">Chat demo</span>
-              <h1>Parla con Juray IA</h1>
-              <div class="chat-user" id="chatUser"></div>
+              <span class="eyebrow">Live Chat</span>
+              <h1>Juray IA</h1>
+              <div class="chat-user"><strong data-user-name>User</strong> · <span data-user-email>user@example.com</span></div>
             </div>
-            <div class="row-gap">
-              <a href="welcome.html" class="small-link">← Torna alla welcome</a>
-            </div>
+            <div class="status-chip" id="providerBadge">Ready</div>
           </header>
-
           <div class="chat-body" id="messages"></div>
-
           <form class="chat-input-area" id="chatForm">
-            <input class="input" type="text" id="userInput" placeholder="Scrivi un messaggio..." autocomplete="off" required>
-            <button type="submit" class="btn-primary">Invia</button>
+            <input class="input" type="text" id="userInput" placeholder="Write your message..." autocomplete="off" required>
+            <button type="submit" class="btn-primary">Send</button>
           </form>
-
-          <p class="chat-tip">Suggerimento: prova a scrivere “ciao”, “login”, “registrazione” oppure “aiuto”.</p>
         </section>
       </main>
     </div>
   </div>
-
   <script src="auth.js"></script>
 </body>
 </html>

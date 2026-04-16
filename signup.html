@@ -3,81 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Juray IA | Sign up</title>
+  <title>Juray IA | Sign Up</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="page-shell">
-    <div class="container">
-      <header class="site-header">
-        <a href="index.html" class="brand">
-          <span class="brand-badge">J</span>
-          <span class="brand-copy">
-            <strong>Juray IA</strong>
-            <span>Registrazione utente</span>
-          </span>
-        </a>
-        <nav class="nav-links">
-          <a href="index.html">Home</a>
-          <a href="login.html" class="nav-primary">Login</a>
-        </nav>
-      </header>
-
-      <main class="page-center">
-        <div class="auth-layout">
-          <section class="auth-card">
-            <span class="eyebrow">Nuovo profilo</span>
-            <h1 class="page-title">Crea il tuo account</h1>
-            <p class="form-subtitle">Registrati con i tuoi dati per accedere all’area personale e alla chat.</p>
-
-            <form id="signupForm" class="form-grid" novalidate>
-              <div class="form-row">
-                <label for="name">Nome completo</label>
-                <input class="input" type="text" id="name" name="name" placeholder="Inserisci nome e cognome" required>
-              </div>
-
-              <div class="form-row">
-                <label for="email">Email</label>
-                <input class="input" type="email" id="email" name="email" placeholder="nome@email.com" required>
-              </div>
-
-              <div class="form-row">
-                <label for="password">Password</label>
-                <input class="input" type="password" id="password" name="password" placeholder="Minimo 4 caratteri" minlength="4" required>
-              </div>
-
-              <div class="form-row">
-                <label for="confirmPassword">Conferma password</label>
-                <input class="input" type="password" id="confirmPassword" name="confirmPassword" placeholder="Ripeti la password" minlength="4" required>
-              </div>
-
-              <button type="submit" class="btn-primary">Crea account</button>
-            </form>
-
-            <div id="messageBox" class="alert" role="alert" aria-live="polite"></div>
-
-            <p class="helper-text">Hai già un account? <a href="login.html">Vai al login</a>.</p>
-          </section>
-
-          <aside class="info-card">
-            <span class="eyebrow">Student-ready design</span>
-            <h3>Perché questa versione è migliore?</h3>
-            <p>
-              La nuova struttura elimina campi duplicati, semplifica il codice JavaScript e rende l’interfaccia più ordinata.
-              In questo modo il progetto appare più maturo ma resta comprensibile e realistico per uno studente.
-            </p>
-
-            <ul class="info-list">
-              <li>Un solo form chiaro, con validazione di conferma password.</li>
-              <li>Messaggi di stato leggibili dopo registrazione o errore.</li>
-              <li>Registrazione collegata al database locale gestito dal server Express.</li>
-            </ul>
-          </aside>
-        </div>
+  <div class="page-shell auth-shell">
+    <div class="container auth-layout reverse">
+      <main class="form-card glass-card">
+        <span class="eyebrow">Registration</span>
+        <h2 class="form-title">Create your account</h2>
+        <form id="signupForm" class="form-grid">
+          <div class="form-group">
+            <label for="name">Full name</label>
+            <input class="input" type="text" id="name" placeholder="Your full name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input class="input" type="email" id="email" placeholder="name@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="password-field">
+              <input class="input" type="password" id="password" placeholder="At least 4 characters" minlength="4" required>
+              <button type="button" class="ghost-btn" id="togglePassword">Show</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirm password</label>
+            <div class="password-field">
+              <input class="input" type="password" id="confirmPassword" placeholder="Repeat password" minlength="4" required>
+              <button type="button" class="ghost-btn" id="toggleConfirmPassword">Show</button>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary">Create account</button>
+        </form>
+        <div id="signupStatus" class="status"></div>
+        <p class="helper-text"><a href="login.html">Already have an account?</a></p>
       </main>
+
+      <section class="auth-aside glass-card">
+        <a href="index.html" class="brand compact-brand">
+          <span class="brand-badge">J</span>
+          <span class="brand-copy"><strong>Juray IA</strong><span>Create access</span></span>
+        </a>
+        <span class="eyebrow">Private Workspace</span>
+        <h1>Start your session</h1>
+        <ul class="feature-list">
+          <li>Secure sign in</li>
+          <li>Persistent sessions</li>
+          <li>Saved conversation history</li>
+        </ul>
+      </section>
     </div>
   </div>
-
   <script src="auth.js"></script>
 </body>
 </html>

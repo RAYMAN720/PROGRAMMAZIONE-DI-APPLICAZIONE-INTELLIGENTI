@@ -3,87 +3,55 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Juray IA | Home</title>
+  <title>Juray IA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="page-shell">
-    <div class="container">
-      <header class="site-header">
-        <a href="index.html" class="brand">
-          <span class="brand-badge">J</span>
-          <span class="brand-copy">
-            <strong>Juray IA</strong>
-            <span>Assistente digitale per procedure e supporto</span>
-          </span>
-        </a>
-        <nav class="nav-links">
-          <a href="login.html">Login</a>
-          <a href="signup.html" class="nav-primary">Sign up</a>
-        </nav>
-      </header>
+  <div class="page-shell landing-shell">
+    <header class="site-header container wide">
+      <a href="index.html" class="brand">
+        <span class="brand-badge">J</span>
+        <span class="brand-copy">
+          <strong>Juray IA</strong>
+          <span>AI Workspace</span>
+        </span>
+      </a>
+      <nav class="nav-links">
+        <a href="login.html">Login</a>
+        <a href="signup.html" class="nav-primary">Get Started</a>
+      </nav>
+    </header>
 
-      <main class="hero">
-        <section class="hero-copy">
-          <span class="eyebrow">Project work • Human-centered interface</span>
-          <h1 class="hero-title">Organizza la tua procedura in modo più semplice e guidato.</h1>
-          <p class="lead">
-            Juray IA è una web app pensata per accompagnare l’utente tra accesso, orientamento e supporto in chat.
-            Il progetto unisce una grafica moderna a una struttura chiara, facile da capire e da estendere.
-          </p>
-
-          <div class="cta-row">
-            <a href="login.html" class="btn-white">Get started</a>
-            <a href="signup.html" class="btn-secondary">Crea un account</a>
-          </div>
-
-          <div class="hero-notes">
-            <article class="stat-card">
-              <strong>4 pagine</strong>
-              <span>Flusso completo: home, accesso, area utente e chat.</span>
-            </article>
-            <article class="stat-card">
-              <strong>SQLite</strong>
-              <span>I dati degli utenti vengono salvati dal server in un database locale.</span>
-            </article>
-            <article class="stat-card">
-              <strong>Express</strong>
-              <span>Il progetto gira in localhost con struttura semplice da presentare.</span>
-            </article>
-          </div>
-        </section>
-
-        <aside class="hero-panel">
-          <div class="robot-frame">
-            <img src="image/imag1.png" alt="Robot Juray IA" class="robot">
-            <span class="panel-badge">Student project</span>
-          </div>
-
-          <div class="panel-card">
-            <h3>Esperienza più solida</h3>
-            <p>
-              Il design riprende il tuo concept iniziale ma con una gerarchia visiva più pulita,
-              carte coerenti, pulsanti uniformi e pagine più credibili per una consegna universitaria.
-            </p>
-          </div>
-        </aside>
-      </main>
-
-      <section class="features-grid section-spacing">
-        <article class="feature-card">
-          <h3>Accesso guidato</h3>
-          <p>Login e registrazione hanno validazioni più chiare, feedback visivi e testi coerenti in tutte le pagine.</p>
-        </article>
-        <article class="feature-card">
-          <h3>Area riservata</h3>
-          <p>Dopo l’accesso l’utente vede un riepilogo del proprio stato e può entrare nella chat in pochi passaggi.</p>
-        </article>
-        <article class="feature-card">
-          <h3>Chat dimostrativa</h3>
-          <p>La chat conserva un’interazione semplice ma ordinata, utile per mostrare il flusso dell’applicazione.</p>
-        </article>
+    <main class="container wide hero-grid">
+      <section class="hero-copy">
+        <span class="eyebrow">AI Assistant Platform</span>
+        <h1>Secure access. Fast answers. Clean workflow.</h1>
+        <p>Authentication, session management, persistent storage, and a live Mistral-powered assistant in one polished web experience.</p>
+        <div class="hero-actions">
+          <a href="signup.html" class="btn-primary">Create Account</a>
+          <a href="login.html" class="btn-secondary">Sign In</a>
+        </div>
+        <div class="hero-metrics">
+          <article><strong>Authentication</strong><span>SQLite-backed users and sessions.</span></article>
+          <article><strong>AI Chat</strong><span>Responses generated through a secure backend.</span></article>
+          <article><strong>Persistence</strong><span>Conversation history saved per user.</span></article>
+        </div>
       </section>
-    </div>
+
+      <section class="hero-visual glass-card">
+        <div class="orb orb-one"></div>
+        <div class="orb orb-two"></div>
+        <img src="image/imag1.png" alt="Juray IA Robot" class="hero-robot">
+        <div class="hero-panel">
+          <article class="summary-card"><strong>Database</strong><span>Users, sessions, and messages.</span></article>
+          <article class="summary-card"><strong>Mistral</strong><span>Server-side API integration.</span></article>
+          <article class="summary-card"><strong>Express</strong><span>Ready to run on localhost.</span></article>
+        </div>
+      </section>
+    </main>
   </div>
 </body>
 </html>

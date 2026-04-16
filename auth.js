@@ -1,234 +1,173 @@
-const STORAGE_KEY = 'currentUser';
+const session = {
+  save(payload) { localStorage.setItem('juray_session', JSON.stringify(payload)); },
+  get() { try { return JSON.parse(localStorage.getItem('juray_session')); } catch { return null; } },
+  clear() { localStorage.removeItem('juray_session'); },
+  token() { return this.get()?.token || ''; }
+};
 
-function getCurrentUser() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : null;
-  } catch (error) {
-    return null;
-  }
-}
+async function apiFetch(url, options = {}) {
+  const headers = new Headers(options.headers || {});
+  headers.set('Content-Type', 'application/json');
+  const token = session.token();
+  if (token) headers.set('Authorization', `Bearer ${token}`);
 
-function saveCurrentUser(user) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
-}
-
-function clearCurrentUser() {
-  localStorage.removeItem(STORAGE_KEY);
-}
-
-function showMessage(element, text, type = 'error') {
-  if (!element) return;
-  element.textContent = text;
-  element.className = `alert show ${type}`;
-}
-
-function clearMessage(element) {
-  if (!element) return;
-  element.textContent = '';
-  element.className = 'alert';
-}
-
-function requireAuth() {
-  const user = getCurrentUser();
-  if (!user) {
-    window.location.href = 'login.html';
-    return null;
-  }
-  return user;
-}
-
-function logoutUser() {
-  clearCurrentUser();
-  window.location.href = 'login.html';
-}
-
-async function apiRequest(url, payload) {
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(payload)
-  });
-
-  let data = {};
-  try {
-    data = await response.json();
-  } catch (error) {
-    data = {};
-  }
-
-  if (!response.ok) {
-    throw new Error(data.message || 'Si è verificato un errore durante la richiesta.');
-  }
-
+  const response = await fetch(url, { ...options, headers });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.message || data.reply || 'Request failed');
   return data;
 }
 
-function setupSignupForm() {
-  const form = document.getElementById('signupForm');
-  if (!form) return;
-
-  const messageBox = document.getElementById('messageBox');
-
-  form.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    clearMessage(messageBox);
-
-    const name = document.getElementById('name').value.trim();
-    const email = document.getElementById('email').value.trim().toLowerCase();
-    const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
-
-    if (!name || !email || !password || !confirmPassword) {
-      showMessage(messageBox, 'Compila tutti i campi richiesti.');
-      return;
-    }
-
-    if (password.length < 4) {
-      showMessage(messageBox, 'La password deve contenere almeno 4 caratteri.');
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      showMessage(messageBox, 'Le password non coincidono.');
-      return;
-    }
-
-    try {
-      const data = await apiRequest('/api/signup', { name, email, password });
-      showMessage(messageBox, data.message || 'Registrazione completata con successo.', 'success');
-      form.reset();
-      setTimeout(() => {
-        window.location.href = 'login.html';
-      }, 1100);
-    } catch (error) {
-      showMessage(messageBox, error.message || 'Impossibile registrare l’utente.');
-    }
+function bindPasswordToggle(buttonId, inputId) {
+  const button = document.getElementById(buttonId);
+  const input = document.getElementById(inputId);
+  if (!button || !input) return;
+  button.addEventListener('click', () => {
+    const hidden = input.type === 'password';
+    input.type = hidden ? 'text' : 'password';
+    button.textContent = hidden ? 'Hide' : 'Show';
   });
 }
 
-function setupLoginForm() {
-  const form = document.getElementById('loginForm');
-  if (!form) return;
+function setStatus(id, message = '', type = '') {
+  const box = document.getElementById(id);
+  if (!box) return;
+  box.textContent = message;
+  box.className = type ? `status ${type}` : 'status';
+}
 
-  const messageBox = document.getElementById('messageBox');
+function escapeHtml(value) {
+  return String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+}
 
-  form.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    clearMessage(messageBox);
+function setUser(user) {
+  document.querySelectorAll('[data-user-name]').forEach((node) => node.textContent = user.name);
+  document.querySelectorAll('[data-user-email]').forEach((node) => node.textContent = user.email);
+}
 
-    const email = document.getElementById('email').value.trim().toLowerCase();
-    const password = document.getElementById('password').value;
+async function requireCurrentUser() {
+  const current = session.get();
+  if (!current?.token) {
+    window.location.href = 'login.html';
+    return null;
+  }
+  try {
+    const data = await apiFetch('/api/me');
+    session.save({ token: current.token, user: data.user });
+    return data;
+  } catch {
+    session.clear();
+    window.location.href = 'login.html';
+    return null;
+  }
+}
 
-    if (!email || !password) {
-      showMessage(messageBox, 'Inserisci email e password.');
-      return;
-    }
+async function logout() {
+  try { await apiFetch('/api/logout', { method: 'POST' }); } catch {}
+  session.clear();
+  window.location.href = 'login.html';
+}
 
-    try {
-      const data = await apiRequest('/api/login', { email, password });
-      saveCurrentUser(data.user);
-      showMessage(messageBox, data.message || 'Accesso effettuato.', 'success');
-      setTimeout(() => {
+window.addEventListener('DOMContentLoaded', async () => {
+  bindPasswordToggle('togglePassword', 'password');
+  bindPasswordToggle('toggleConfirmPassword', 'confirmPassword');
+
+  const logoutButton = document.getElementById('logoutBtn');
+  if (logoutButton) logoutButton.addEventListener('click', logout);
+
+  const loginForm = document.getElementById('loginForm');
+  if (loginForm) {
+    loginForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      setStatus('loginStatus');
+      try {
+        const data = await apiFetch('/api/login', { method: 'POST', body: JSON.stringify({ email, password }) });
+        session.save({ token: data.token, user: data.user });
         window.location.href = 'welcome.html';
-      }, 700);
-    } catch (error) {
-      showMessage(messageBox, error.message || 'Credenziali non valide.');
+      } catch (error) {
+        setStatus('loginStatus', error.message, 'error');
+      }
+    });
+  }
+
+  const signupForm = document.getElementById('signupForm');
+  if (signupForm) {
+    signupForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirm = document.getElementById('confirmPassword').value;
+      setStatus('signupStatus');
+      if (password !== confirm) {
+        setStatus('signupStatus', 'Passwords do not match.', 'error');
+        return;
+      }
+      try {
+        const data = await apiFetch('/api/signup', { method: 'POST', body: JSON.stringify({ name, email, password }) });
+        session.save({ token: data.token, user: data.user });
+        window.location.href = 'welcome.html';
+      } catch (error) {
+        setStatus('signupStatus', error.message, 'error');
+      }
+    });
+  }
+
+  const welcomePage = document.querySelector('[data-page="welcome"]');
+  if (welcomePage) {
+    const data = await requireCurrentUser();
+    if (!data) return;
+    setUser(data.user);
+    const count = document.getElementById('messageCount');
+    if (count) count.textContent = String(data.messages.length);
+  }
+
+  const chatPage = document.querySelector('[data-page="chat"]');
+  if (chatPage) {
+    const data = await requireCurrentUser();
+    if (!data) return;
+    setUser(data.user);
+
+    const list = document.getElementById('messages');
+    const form = document.getElementById('chatForm');
+    const input = document.getElementById('userInput');
+    const button = form.querySelector('button');
+    const badge = document.getElementById('providerBadge');
+
+    const renderMessage = (text, role) => {
+      const item = document.createElement('article');
+      item.className = `msg ${role}`;
+      item.innerHTML = `<div class="msg-bubble"><p>${escapeHtml(text)}</p></div>`;
+      list.appendChild(item);
+      list.scrollTop = list.scrollHeight;
+    };
+
+    if (data.messages.length) {
+      data.messages.forEach((message) => renderMessage(message.content, message.role));
     }
-  });
-}
 
-function setupWelcomePage() {
-  const userName = document.getElementById('userName');
-  if (!userName) return;
-
-  const user = requireAuth();
-  if (!user) return;
-
-  userName.textContent = user.name;
-
-  const welcomeText = document.getElementById('welcomeText');
-  const userInfoText = document.getElementById('userInfoText');
-  if (welcomeText) {
-    welcomeText.textContent = `Ciao ${user.name}, il tuo account è pronto e puoi continuare con la chat.`;
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const message = input.value.trim();
+      if (!message) return;
+      renderMessage(message, 'user');
+      input.value = '';
+      input.disabled = true;
+      button.disabled = true;
+      badge.textContent = 'Working';
+      try {
+        const data = await apiFetch('/api/chat', { method: 'POST', body: JSON.stringify({ message }) });
+        renderMessage(data.reply, 'assistant');
+        badge.textContent = data.provider === 'mistral' ? 'Mistral' : 'Ready';
+      } catch (error) {
+        renderMessage(error.message, 'assistant');
+        badge.textContent = 'Error';
+      } finally {
+        input.disabled = false;
+        button.disabled = false;
+        input.focus();
+      }
+    });
   }
-  if (userInfoText) {
-    userInfoText.textContent = `Utente collegato: ${user.name} • ${user.email}`;
-  }
-
-  const logoutButton = document.getElementById('logoutBtn');
-  if (logoutButton) {
-    logoutButton.addEventListener('click', logoutUser);
-  }
-}
-
-function botReply(text) {
-  const input = text.toLowerCase();
-
-  if (input.includes('ciao') || input.includes('salve')) {
-    return 'Ciao! Sono Juray IA. Posso darti informazioni su login, registrazione e funzionamento della demo.';
-  }
-  if (input.includes('login')) {
-    return 'Il login controlla email e password nel database locale e, se corretti, salva la sessione nel browser.';
-  }
-  if (input.includes('registr')) {
-    return 'La registrazione crea un nuovo utente nel database SQLite tramite una chiamata al server Express.';
-  }
-  if (input.includes('aiuto') || input.includes('help')) {
-    return 'Puoi chiedermi come funziona l’app, come registrarti oppure come viene gestita la sessione utente.';
-  }
-  return 'Messaggio ricevuto. Questa chat è una demo UI pensata per mostrare il flusso di un assistente digitale.';
-}
-
-function addMessage(container, text, sender) {
-  const bubble = document.createElement('div');
-  bubble.className = `msg ${sender}`;
-  bubble.textContent = text;
-  container.appendChild(bubble);
-  container.scrollTop = container.scrollHeight;
-}
-
-function setupChatPage() {
-  const chatForm = document.getElementById('chatForm');
-  if (!chatForm) return;
-
-  const user = requireAuth();
-  if (!user) return;
-
-  const chatUser = document.getElementById('chatUser');
-  const messages = document.getElementById('messages');
-  const userInput = document.getElementById('userInput');
-  const logoutButton = document.getElementById('logoutBtn');
-
-  if (chatUser) {
-    chatUser.textContent = `Connesso come ${user.name} (${user.email})`;
-  }
-
-  addMessage(messages, `Benvenuto ${user.name}! Scrivimi pure un messaggio per iniziare la demo.`, 'bot');
-
-  chatForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const text = userInput.value.trim();
-    if (!text) return;
-
-    addMessage(messages, text, 'user');
-    userInput.value = '';
-
-    window.setTimeout(() => {
-      addMessage(messages, botReply(text), 'bot');
-    }, 350);
-  });
-
-  if (logoutButton) {
-    logoutButton.addEventListener('click', logoutUser);
-  }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  setupSignupForm();
-  setupLoginForm();
-  setupWelcomePage();
-  setupChatPage();
 });

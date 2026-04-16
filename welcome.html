@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Juray IA | Welcome</title>
+  <title>Juray IA | Workspace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="page-shell">
-    <div class="container">
+  <div class="page-shell dashboard-shell" data-page="welcome">
+    <div class="container wide">
       <header class="site-header">
         <a href="index.html" class="brand">
           <span class="brand-badge">J</span>
-          <span class="brand-copy">
-            <strong>Juray IA</strong>
-            <span>Area personale</span>
-          </span>
+          <span class="brand-copy"><strong>Juray IA</strong><span>Workspace</span></span>
         </a>
         <nav class="nav-links">
           <a href="chat.html">Chat</a>
@@ -23,48 +23,32 @@
         </nav>
       </header>
 
-      <main class="welcome-layout">
-        <section class="welcome-card">
-          <span class="eyebrow">Login riuscito</span>
-          <h1 class="page-title">Benvenuto, <span id="userName">Utente</span></h1>
-          <p class="page-subtitle" id="welcomeText">Stiamo preparando la tua area personale.</p>
-
-          <div class="cta-row">
-            <a href="chat.html" class="btn-white">Apri la chat</a>
-            <a href="index.html" class="btn-secondary">Torna alla home</a>
+      <main class="dashboard-grid">
+        <section class="dashboard-card hero-dashboard glass-card">
+          <div>
+            <span class="eyebrow">Workspace</span>
+            <h1>Hello, <span data-user-name>User</span>.</h1>
+            <div class="mini-actions">
+              <a href="chat.html" class="btn-primary">Open Chat</a>
+              <a href="index.html" class="btn-secondary">Home</a>
+            </div>
           </div>
-
-          <div class="dashboard-grid section-spacing">
-            <article class="feature-card">
-              <h3>Profilo attivo</h3>
-              <p>I dati base dell’utente vengono recuperati dalla sessione locale dopo la risposta del server.</p>
-            </article>
-            <article class="feature-card">
-              <h3>Flusso protetto</h3>
-              <p>Se non c’è una sessione valida, la pagina rimanda automaticamente al login.</p>
-            </article>
-            <article class="feature-card">
-              <h3>Passaggio successivo</h3>
-              <p>Da qui l’utente può testare il chatbot e simulare un piccolo assistente digitale.</p>
-            </article>
+          <div class="stat-grid">
+            <article class="stat-card"><span class="eyebrow">Account</span><div class="stat-value" data-user-name>User</div></article>
+            <article class="stat-card"><span class="eyebrow">Messages</span><div class="stat-value" id="messageCount">0</div></article>
           </div>
         </section>
 
-        <aside class="info-card">
-          <div class="robot-frame">
-            <img src="image/imag1.png" alt="Robot Juray IA" class="robot">
-            <span class="panel-badge">User area</span>
-          </div>
-
-          <div class="section-spacing">
-            <h3>Stato della sessione</h3>
-            <p class="muted" id="userInfoText">Caricamento informazioni utente...</p>
-          </div>
+        <aside class="dashboard-card glass-card side-panel">
+          <span class="eyebrow">Profile</span>
+          <dl class="summary-list">
+            <div><dt>Name</dt><dd data-user-name>User</dd></div>
+            <div><dt>Email</dt><dd data-user-email>user@example.com</dd></div>
+          </dl>
         </aside>
       </main>
     </div>
   </div>
-
   <script src="auth.js"></script>
 </body>
 </html>
