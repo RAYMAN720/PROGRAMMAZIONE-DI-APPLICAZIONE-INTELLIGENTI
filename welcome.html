@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Juray IA - Welcome</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="page-center">
+    <section class="welcome-card">
+      <img src="image/imag1.png" alt="Robot Juray IA" class="robot">
+      <h1 class="title">Welcome su Juray IA</h1>
+      <p class="subtitle" id="welcomeText">Accesso effettuato con successo.</p>
+      <div class="row-gap">
+        <a href="chat.html" class="btn-white">Go to Chatbot</a>
+        <button id="logoutBtn" class="btn btn-secondary" type="button">Logout</button>
+      </div>
+      <ul class="info-list">
+        <li>Questa pagina si apre solo dopo il login.</li>
+        <li>Il nome utente viene letto dalla sessione salvata nel browser.</li>
+        <li>Il pulsante Logout cancella la sessione e torna al login.</li>
+      </ul>
+    </section>
+  </main>
+
+  <script src="auth.js"></script>
+  <script>
+    const user = requireAuth();
+    const welcomeText = document.getElementById('welcomeText');
+    welcomeText.textContent = `Ciao ${user.name}, puoi accedere alla chat.`;
+
+    document.getElementById('logoutBtn').addEventListener('click', function () {
+      logoutUser();
+      window.location.href = 'login.html';
+    });
+  </script>
+</body>
+</html>
